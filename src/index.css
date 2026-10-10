@@ -1,0 +1,194 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Palette ─────────────────────────────────────────────
+   Light = "daytime sky", Dark = "yozakura" (night sakura).
+   Components only use the semantic names below. */
+:root {
+  --base: #f7f5fb;
+  --surface: #ffffff;
+  --surface-2: #efebf7;
+  --ink: #1c1b2e;
+  --muted: #5b5876;
+  --line: rgba(28, 27, 46, 0.1);
+  --accent: #7c3aed;
+  --sakura: #db2777;
+  --glow: rgba(124, 58, 237, 0.25);
+  --wire: rgba(28, 27, 46, 0.22);
+  color-scheme: light;
+}
+
+.dark {
+  --base: #120d18;
+  --surface: #1b1422;
+  --surface-2: #251a2e;
+  --ink: #f7ecf3;
+  --muted: #bba6b8;
+  --line: rgba(247, 236, 243, 0.09);
+  --accent: #f5a3c7;
+  --sakura: #ffd1e3;
+  --glow: rgba(245, 163, 199, 0.28);
+  --wire: #120d18;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-page: var(--base);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-sakura: var(--sakura);
+  --color-glow: var(--glow);
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Zen Kaku Gothic New', 'Hiragino Sans', 'Yu Gothic UI', 'Yu Gothic', 'Noto Sans JP', 'Noto Sans CJK JP', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 72px;
+  }
+
+  body {
+    @apply bg-page text-ink font-sans antialiased;
+    transition:
+      background-color 300ms ease,
+      color 300ms ease;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--base);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/* ── Sky ──────────────────────────────────────────────────
+   These gradients show while the cloud shader loads, and stay
+   as the sky if WebGL isn't available. */
+.sky-dark {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 100%, rgba(245, 163, 199, 0.3), transparent 70%),
+    linear-gradient(to bottom, #0c0814 0%, #1a1026 35%, #2b1838 58%, #5a2f55 80%, #9b5577 100%);
+}
+
+.sky-light {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 100%, rgba(251, 207, 170, 0.55), transparent 70%),
+    linear-gradient(to bottom, #a9c8ef 0%, #c5dbf5 32%, #e3d6f0 60%, #f6d4df 80%, #fbe1cb 100%);
+}
+
+@keyframes shooting-star {
+  0% {
+    transform: translate(0, 0) rotate(-35deg);
+    opacity: 0;
+  }
+  1% {
+    opacity: 1;
+  }
+  10% {
+    transform: translate(-460px, 320px) rotate(-35deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-460px, 320px) rotate(-35deg);
+    opacity: 0;
+  }
+}
+
+.shooting-star {
+  animation: shooting-star 9s ease-out 2.5s infinite;
+}
+
+/* ── Sakura petals (night only) ───────────────────────── */
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -5vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  8%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--drift, 80px), 105vh, 0) rotate(var(--spin, 540deg));
+    opacity: 0;
+  }
+}
+
+@keyframes petal-flutter {
+  0%,
+  100% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: rotateX(65deg) rotateY(35deg);
+  }
+}
+
+.petal {
+  animation: petal-fall var(--dur, 12s) linear var(--delay, 0s) infinite;
+  will-change: transform;
+}
+
+.petal-flutter {
+  border-radius: 150% 0 150% 0;
+  background: linear-gradient(135deg, #ffe6f0 0%, #f5a3c7 100%);
+  opacity: 0.8;
+  animation: petal-flutter var(--flutter, 3s) ease-in-out infinite;
+}
+
+/* ── Music equalizer bars ─────────────────────────────── */
+@keyframes eq {
+  0%,
+  100% {
+    height: 30%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+.eq-bar {
+  height: 60%;
+  animation: eq 0.9s ease-in-out infinite;
+}
+
+/* ── Film grain ───────────────────────────────────────── */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+}
+
+.dark .grain {
+  opacity: 0.06;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .shooting-star,
+  .petal,
+  .petal-flutter,
+  .eq-bar,
+  .animate-bounce {
+    animation: none !important;
+  }
+
+  .shooting-star,
+  .petal {
+    display: none;
+  }
+}

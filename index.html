@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>David Huynh | Software Developer</title>
+    <meta
+      name="description"
+      content="David Huynh is a Software Engineering student and undergraduate researcher at UT Arlington, building web, mobile, cloud, and streaming systems."
+    />
+    <meta property="og:title" content="David Huynh | Software Developer" />
+    <meta
+      property="og:description"
+      content="Web, mobile, cloud, and streaming projects by David Huynh."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/projects/skyblock-zordle/menu.png" />
+    <meta name="theme-color" content="#120D18" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // Apply the saved/OS theme before first paint so there's no flash.
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme')
+          var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches
+          var dark = saved ? saved === 'dark' : !prefersLight
+          document.documentElement.classList.toggle('dark', dark)
+        } catch (e) {
+          document.documentElement.classList.add('dark')
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
