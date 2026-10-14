@@ -32,6 +32,7 @@ import {
   SiFfmpeg,
   SiSqlite,
   SiFirebase,
+  SiPytest,
 } from 'react-icons/si'
 import { TbBrandCSharp, TbBrandAws, TbLambda, TbSql, TbApi } from 'react-icons/tb'
 import {
@@ -49,6 +50,9 @@ import {
   LuRadio,
   LuVideo,
   LuLock,
+  LuChartCandlestick,
+  LuCalendarClock,
+  LuActivity,
 } from 'react-icons/lu'
 
 export const profile = {
@@ -107,6 +111,27 @@ export const projects = [
       '/projects/skyblock-zordle/collections.png',
       '/projects/skyblock-zordle/how-to-play.png',
     ],
+  },
+  {
+    slug: 'skyblock-market',
+    title: 'SkyBlock Market',
+    period: 'Oct 2026 – Present',
+    description:
+      'A serverless pipeline that captures every finished Hypixel SkyBlock auction, about 80 sales a minute, to train a model that prices upgraded items.',
+    longDescription:
+      "Hypixel publishes every finished auction but only keeps the last 60 seconds, with no history. SkyBlock Market runs a Lambda every minute that saves each batch to S3 before it disappears, building the dataset for a price model that will feed into SkyblockZordle. The collector is live; the model comes once there are a few weeks of sales.",
+    highlights: [
+      'Built a serverless pipeline that captures every finished Hypixel SkyBlock auction (about 80 sales per minute) from a feed that only keeps the last 60 seconds, with 100% minute coverage since launch.',
+      "Designed for exactly-once capture by keying files on the source's refresh time, with each run recovering any batch the previous run missed.",
+      'Enforced least privilege (the function can only add files) and kept buyer and seller IDs out of storage by allowlist.',
+      'Wrote 58 tests at 100% coverage, including policy tests that fail CI if any IAM role could exceed its permissions boundary.',
+      'Monitored with four CloudWatch alarms, including a custom sales-volume metric, with email alerts verified end to end.',
+    ],
+    technologies: ['Python', 'AWS Lambda', 'EventBridge', 'S3', 'CloudWatch', 'pytest', 'AWS SAM', 'GitHub Actions'],
+    repoUrl: 'https://github.com/DavidHuynh01/skyblock-market',
+    liveUrl: '',
+    images: [],
+    placeholderIcon: LuChartCandlestick,
   },
   {
     slug: 'smart-glasses-streaming',
@@ -335,8 +360,11 @@ export const skills = [
       { name: 'IAM & SSM', icon: LuKeyRound },
       { name: 'AWS SAM (IaC)', icon: LuFileCode },
       { name: 'GitHub Actions', icon: SiGithubactions },
+      { name: 'EventBridge', icon: LuCalendarClock },
+      { name: 'CloudWatch', icon: LuActivity },
       { name: 'GitHub OIDC', icon: LuShieldCheck },
       { name: 'Unit Testing', icon: LuTestTube },
+      { name: 'pytest', icon: SiPytest },
     ],
   },
   {
